@@ -1,0 +1,24 @@
+name: Build Windows installer
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build application and installer
+        shell: pwsh
+        run: ./DynamicIsland-Project-v0.3-full/Scripts/Build-Installer.ps1
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DynamicIsland-Windows-Installer
+          path: DynamicIsland-Project-v0.3-full/dist/DynamicIsland-Setup.exe
+          if-no-files-found: error
